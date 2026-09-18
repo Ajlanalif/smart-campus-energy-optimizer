@@ -3,10 +3,11 @@ from __future__ import annotations
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 
 from app.schemas.request import OptimizeEnergyRequest
 from app.schemas.response import OptimizeEnergyResponse
+from app.services.optimize import run_optimize
 
 router = APIRouter()
 logger = logging.getLogger("gridwise.api")
@@ -24,13 +25,16 @@ def health() -> dict[str, str]:
     response_model=OptimizeEnergyResponse,
 )
 def optimize_energy(payload: OptimizeEnergyRequest) -> OptimizeEnergyResponse:
-    """Phase 2: schemas are validated; pipeline is still a placeholder."""
+    """End-to-end optimization for one scenario.
+
+    Runs the canonical pipeline (LLM → guardrails → apply → optimize →
+    validate) via :func:`app.services.optimize.run_optimize`. All
+    exception-to-HTTP translation happens inside the orchestrator, so
+    this function is a thin wrapper.
+    """
     logger.info(
-        "POST /optimize-energy received scenario_id=%s notes=%d",
+        "POST /optimize-energy scenario=%s notes=%d",
         payload.scenario_id,
         len(payload.operator_notes),
     )
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Optimization pipeline is not yet wired up. See Phase 3+.",
-    )
+    return run_optimize(payload)
