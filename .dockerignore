@@ -1,0 +1,47 @@
+# Anything that doesn't need to ship in the image.
+
+# Local Python virtualenv — never build or copy.
+.venv/
+venv/
+env/
+
+# VCS metadata.
+.git/
+.gitignore
+
+# Test / IDE / cache artifacts that bloat the build context.
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.coverage
+htmlcov/
+
+# IDE / editor cruft.
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Local env files — NEVER bake into the image.
+.env
+.env.*
+
+# Logs.
+*.log
+logs/
+
+# The Dockerfile + this ignore file are not needed inside the image, but
+# `docker build` doesn't COPY them anyway. Kept here for clarity.
+
+# Documentation files are not needed at runtime; uncomment if size matters:
+# README.md
+# FRONTEND_API_INTEGRATION.md
+
+# Empty placeholder dir — no contents to ship.
+samples/
