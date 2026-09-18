@@ -71,8 +71,7 @@ RUN python -c "from app.main import app" \
 # uvicorn is installed by `uv sync` into the system environment.
 # 4 workers is enough for the 100-point rubric's p95-latency scoring; judges
 # can override with -e UVICORN_WORKERS=N if they want.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
-
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
 # ---- healthcheck --------------------------------------------------------
 # Hits /health inside the container. NOTE: this requires curl, which we
 # installed in the apt-get step above.
